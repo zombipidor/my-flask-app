@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from models import db, Thread, Comment
 from datetime import datetime
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -80,7 +82,7 @@ def admin_dashboard():
 
 
 # Удаление треда
-@app.route('/delete_thread/<int:id>')
+@app.route('/delete_thread/<int:id>', methods=['POST'])  # Используем POST
 def delete_thread(id):
     if 'admin_logged_in' not in session:
         return redirect(url_for('admin_login'))  # Если не авторизован, перенаправляем на страницу логина
@@ -118,9 +120,17 @@ def delete_comment(comment_id):
         return redirect(url_for('admin_login'))  # Если не авторизован, перенаправляем на страницу логина
 
     comment = Comment.query.get_or_404(comment_id)
-    db.session.delete(comment)
-    db.session.commit()
+    
+    try:
+        db.session.delete(comment)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()  # Откатим транзакцию в случае ошибки
+        flash(f'Ошибка при удалении комментария: {str(e)}', 'danger')
+        return redirect(url_for('admin_dashboard'))  # Вернемся на панель админа
+
     return redirect(url_for('admin_dashboard'))  # Перенаправляем обратно на панель админа
+
 
 
 
