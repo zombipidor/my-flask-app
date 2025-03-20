@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание треда</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+    <h1 class="pidoras">Создание треда</h1>
+    
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <!-- Контейнер для формы, чтобы задать ширину и центрировать -->
+    <div class="create-thread-container">
+        <form action="{{ url_for('create_thread') }}" method="POST">
+            <label for="title">Название треда:</label>
+            <input type="text" id="title" name="title" required><br><br>
+            
+            <label for="content">Содержание треда:</label>
+            <textarea id="content" name="content" required></textarea><br><br>
+            
+            <label for="author">Ваш ник:</label>
+            <input type="text" id="author" name="author" required><br><br>
+            
+            <button type="submit">Создать тред</button>
+            
+        </form>
+    </div>
+    
+    <br>
+    <a href="{{ url_for('index') }}"  class="sliuhi">Назад на главную</a>
+</body>
+</html>
