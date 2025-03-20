@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ thread.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        // Функция для отображения поля ввода комментария
+        function showCommentForm() {
+            var commentForm = document.getElementById('comment-form');
+            commentForm.style.display = 'block'; // Показать форму
+        }
+    </script>
+</head>
+<body>
+    <!-- Шапка -->
+    <header>
+        <h1>Форум</h1>
+    </header>
+
+    <!-- Основной контейнер -->
+    <main>
+        <!-- Тред -->
+        <div class="thread">
+            <h2>{{ thread.title }}</h2>
+            <p>{{ thread.content }}</p>
+            <p> Дата: {{ thread.created_at }}</p>
+
+            <!-- Кнопка для ответа -->
+            <button onclick="showCommentForm()">Ответить</button>
+        </div>
+
+        <!-- Форма для комментария -->
+        <form action="{{ url_for('create_comment', thread_id=thread.id) }}" method="POST" id="comment-form" style="display:none;">
+            <div class="form-group">
+                <label for="comment">Ваш комментарий:</label>
+                <textarea name="content" id="comment" rows="5" required></textarea>
+                <label for="author">Ваш ник:</label>
+                <input type="text" id="author" name="author" required><br><br>
+                
+            </div>
+            <button type="submit">Отправить</button>
+        </form>
+        
+        <!-- Комментарии -->
+        <div class="comments">
+            {% for comment in comments %}
+                <div class="comment">
+                    <p><strong>{{ comment.author }}</strong> — {{ comment.content }}</p>
+                    <p>Дата: {{ comment.created_at }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+    <a href="{{ url_for('index') }}" class="button-back">Назад на главную</a>
+</body>
+</html>

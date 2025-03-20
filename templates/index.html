@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4Faq</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Добро пожаловать на 4Faq</h1>
+        {% if 'admin' in session %}
+    <!-- Если пользователь авторизован как админ -->
+    <a href="{{ url_for('admin_login') }}" class="admin-button">Админка</a>
+{% endif %}
+    </header>
+
+    <main>
+        <div class="create-thread-container">
+            <a href="{{ url_for('create_thread') }}" class="create-thread-btn," >Создать тред</a>
+        </div>
+
+        <ul>
+            {% for thread in threads %}
+                <li>
+                    <h2><a href="{{ url_for('thread', thread_id=thread.id) }}">{{ thread.title }}</a></h2>
+                    <p>{{ thread.content }}</p>
+                    <p> Дата создания: {{ thread.created_at }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>
