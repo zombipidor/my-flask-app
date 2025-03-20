@@ -9,10 +9,8 @@
 <body>
     <header>
         <h1>Добро пожаловать на 4Faq</h1>
-        {% if 'admin' in session %}
     <!-- Если пользователь авторизован как админ -->
     <a href="{{ url_for('admin_login') }}" class="admin-button">Админка</a>
-{% endif %}
     </header>
 
     <main>
@@ -32,3 +30,4 @@
     </main>
 </body>
 </html>
+
